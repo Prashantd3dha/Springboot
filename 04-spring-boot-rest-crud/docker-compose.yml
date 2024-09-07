@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    build:
+      context: ./spring-boot-employee-sql-script
+    image: mysql
+    ports:
+      - "3300:3306"   
+  
+  spring-boot-app:
+    container_name: spring-boot-app
+    restart: on-failure
+    build: 
+      context: ./02-spring-boot-rest-crud-employee
+    image: spring-boot-app
+    ports:
+      - "8080:8080" 
+    environment:
+      MYSQL_HOST: mysql
+    depends_on:
+      - mysql          # Ensure mysql-db container is started first
